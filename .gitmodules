@@ -1,0 +1,3 @@
+[submodule "external/SO-ARM100"]
+	path = external/SO-ARM100
+	url = https://github.com/TheRobotStudio/SO-ARM100.git
