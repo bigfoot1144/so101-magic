@@ -1,0 +1,10 @@
+[project]
+name = "so101-magic"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "better-actuator-models[mujoco]>=1.0.2",
+    "mujoco>=3.12.0",
+]
