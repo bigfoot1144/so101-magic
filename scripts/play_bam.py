@@ -20,8 +20,17 @@ XML_PATH = (
     / "scene_bam.xml"
 )
 
-MOTOR_NAME = "feetech_sts3215_7_4V"
+MOTOR_NAME = "feetech_sts3215_12V"
 FRICTION_MODEL = "m1"
+SUPPLY_VOLTAGE = 12.0
+
+BAM_PARAMS_PATH = (
+    ROOT
+    / "params"
+    / "bam"
+    / MOTOR_NAME
+    / f"{FRICTION_MODEL}.json"
+)
 
 JOINT_NAMES = [
     "shoulder_pan",
@@ -149,10 +158,20 @@ def create_bam_controller(
         f"friction_model={FRICTION_MODEL!r}"
     )
 
+    if not BAM_PARAMS_PATH.exists():
+        raise FileNotFoundError(
+            f"Missing BAM parameters: {BAM_PARAMS_PATH}\n"
+            "Add the vendored STS3215 12 V parameter file first."
+        )
+
     bam_model = load_model(
-        motor_name=MOTOR_NAME,
-        model=FRICTION_MODEL,
+        str(BAM_PARAMS_PATH)
     )
+
+    # BAM's STS3215 actuator class defaults to 7.4 V.
+    # The identified parameters below are for the 12 V servo,
+    # so explicitly set the physical supply voltage.
+    bam_model.actuator.vin = SUPPLY_VOLTAGE
 
     controller = MujocoController(
         model=bam_model,
@@ -409,6 +428,8 @@ def main() -> None:
     print("--------------")
     print(f"motor:          {MOTOR_NAME}")
     print(f"friction model: {FRICTION_MODEL}")
+    print(f"BAM params:     {BAM_PARAMS_PATH}")
+    print(f"supply voltage: {SUPPLY_VOLTAGE:.1f} V")
     print()
     print("Controls")
     print("--------")
