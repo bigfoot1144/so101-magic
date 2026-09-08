@@ -216,3 +216,26 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local hardware archives and generated experiment artifacts
+/sessions/
+/data/calibrations/
+/runs/
+/reports/
+.venv*/
+/calibration/work/
+/calibration/sessions/
+/calibration/initial_inspection.json
+/work/
+/ppo/runs/
+
+# Local environment overrides (keep shareable templates)
+.env.*
+!.env.example
+!.env.template
+
+# OS metadata and editor swap files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

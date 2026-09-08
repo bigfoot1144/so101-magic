@@ -1,0 +1,26 @@
+{
+  "cpu_oracle_error_m": 0.011356168493432631,
+  "cpu_oracle_max_speed_rad_s": 0.0009158402813624721,
+  "known_fk_command_within_tolerance": true,
+  "known_fk_command_settled": true,
+  "note": "The FK command does not compensate servo tracking error; PPO can learn a different command.",
+  "random_targets": 512,
+  "fixed_target_m": [
+    0.3145965337753296,
+    -0.03326244279742241,
+    0.25076109170913696
+  ],
+  "mjlab_device": "cpu",
+  "mjlab_observation_dim": 21,
+  "joint_order": [
+    "shoulder_pan",
+    "shoulder_lift",
+    "elbow_flex",
+    "wrist_flex",
+    "wrist_roll",
+    "gripper"
+  ],
+  "partial_reset": "passed",
+  "cpu_mjlab_policy_rollout_max_abs_rad": 1.1628837426336247e-07,
+  "numpy_torch_observation_and_action_parity": "passed"
+}

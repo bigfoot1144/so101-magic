@@ -1,0 +1,143 @@
+{
+  "calibration_sha256": "56a58d460c93f3a86380448b9f0fdcc24f9a8452aac76be0cf7d1f6b2c1e47d5",
+  "synthetic": true,
+  "scope": "Simulator implementation parity, not physical task accuracy",
+  "rmse_limit_deg": 0.05,
+  "max_limit_deg": 0.25,
+  "mjlab_device": "cpu",
+  "passed": true,
+  "trials": [
+    {
+      "log": "replays/00.json",
+      "cpu_vs_reference_deg": {
+        "shoulder_pan": {
+          "rmse": 1.2633564202381012e-17,
+          "p95_abs": 2.4848083448933725e-17,
+          "max_abs": 2.4848083448933725e-17
+        },
+        "shoulder_lift": {
+          "rmse": 0.0,
+          "p95_abs": 0.0,
+          "max_abs": 0.0
+        },
+        "elbow_flex": {
+          "rmse": 0.0,
+          "p95_abs": 0.0,
+          "max_abs": 0.0
+        },
+        "wrist_flex": {
+          "rmse": 0.0,
+          "p95_abs": 0.0,
+          "max_abs": 0.0
+        },
+        "wrist_roll": {
+          "rmse": 4.850773334927486e-19,
+          "p95_abs": 0.0,
+          "max_abs": 3.1060104311167156e-18
+        },
+        "gripper": {
+          "rmse": 1.79962424094218e-17,
+          "p95_abs": 2.4848083448933725e-17,
+          "max_abs": 3.727212517340059e-17
+        }
+      },
+      "cpu_vs_measured_deg": {
+        "shoulder_pan": {
+          "rmse": 1.2633564202381012e-17,
+          "p95_abs": 2.4848083448933725e-17,
+          "max_abs": 2.4848083448933725e-17
+        },
+        "shoulder_lift": {
+          "rmse": 0.0,
+          "p95_abs": 0.0,
+          "max_abs": 0.0
+        },
+        "elbow_flex": {
+          "rmse": 0.0,
+          "p95_abs": 0.0,
+          "max_abs": 0.0
+        },
+        "wrist_flex": {
+          "rmse": 0.0,
+          "p95_abs": 0.0,
+          "max_abs": 0.0
+        },
+        "wrist_roll": {
+          "rmse": 4.850773334927486e-19,
+          "p95_abs": 0.0,
+          "max_abs": 3.1060104311167156e-18
+        },
+        "gripper": {
+          "rmse": 1.79962424094218e-17,
+          "p95_abs": 2.4848083448933725e-17,
+          "max_abs": 3.727212517340059e-17
+        }
+      },
+      "mjlab_vs_reference_deg": {
+        "shoulder_pan": {
+          "rmse": 4.6258530750825395e-07,
+          "p95_abs": 1.1001097990873394e-06,
+          "max_abs": 1.3867756450893906e-06
+        },
+        "shoulder_lift": {
+          "rmse": 1.4887168189422863e-06,
+          "p95_abs": 2.82483262939106e-06,
+          "max_abs": 3.4063655972108643e-06
+        },
+        "elbow_flex": {
+          "rmse": 4.382860562868276e-06,
+          "p95_abs": 8.800687319584125e-06,
+          "max_abs": 9.257669925105553e-06
+        },
+        "wrist_flex": {
+          "rmse": 3.1641496677947865e-06,
+          "p95_abs": 6.726468298489935e-06,
+          "max_abs": 7.612108345108884e-06
+        },
+        "wrist_roll": {
+          "rmse": 3.3001969514802816e-08,
+          "p95_abs": 6.18130434355375e-08,
+          "max_abs": 6.47929350212691e-08
+        },
+        "gripper": {
+          "rmse": 3.1591925274151956e-08,
+          "p95_abs": 5.237794304333859e-08,
+          "max_abs": 5.362920749568533e-08
+        }
+      },
+      "mjlab_vs_measured_deg": {
+        "shoulder_pan": {
+          "rmse": 4.6258530750825395e-07,
+          "p95_abs": 1.1001097990873394e-06,
+          "max_abs": 1.3867756450893906e-06
+        },
+        "shoulder_lift": {
+          "rmse": 1.4887168189422863e-06,
+          "p95_abs": 2.82483262939106e-06,
+          "max_abs": 3.4063655972108643e-06
+        },
+        "elbow_flex": {
+          "rmse": 4.382860562868276e-06,
+          "p95_abs": 8.800687319584125e-06,
+          "max_abs": 9.257669925105553e-06
+        },
+        "wrist_flex": {
+          "rmse": 3.1641496677947865e-06,
+          "p95_abs": 6.726468298489935e-06,
+          "max_abs": 7.612108345108884e-06
+        },
+        "wrist_roll": {
+          "rmse": 3.3001969514802816e-08,
+          "p95_abs": 6.18130434355375e-08,
+          "max_abs": 6.47929350212691e-08
+        },
+        "gripper": {
+          "rmse": 3.1591925274151956e-08,
+          "p95_abs": 5.237794304333859e-08,
+          "max_abs": 5.362920749568533e-08
+        }
+      },
+      "implementation_parity_passed": true
+    }
+  ]
+}

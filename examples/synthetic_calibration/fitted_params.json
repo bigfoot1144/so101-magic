@@ -1,0 +1,177 @@
+{
+  "schema": 1,
+  "joints": {
+    "shoulder_pan": {
+      "bam": {
+        "kt": 1.443985897804671,
+        "error_gain_ratio": 0.9754522802666795,
+        "R": 2.0295624974250366,
+        "armature": 0.03245999409626578,
+        "q_offset": 0.0,
+        "max_velocity": 14.597462818084868,
+        "friction_base": 0.1958711784097532,
+        "friction_viscous": 0.03047350651248057,
+        "model": "m1",
+        "actuator": "sts321512v"
+      },
+      "command_delay_s": 0.0
+    },
+    "shoulder_lift": {
+      "bam": {
+        "kt": 1.443985897804671,
+        "error_gain_ratio": 0.9754522802666795,
+        "R": 2.060005934886412,
+        "armature": 0.03245999409626578,
+        "q_offset": 0.0,
+        "max_velocity": 14.597462818084868,
+        "friction_base": 0.1958711784097532,
+        "friction_viscous": 0.03047350651248057,
+        "model": "m1",
+        "actuator": "sts321512v"
+      },
+      "command_delay_s": 0.007
+    },
+    "elbow_flex": {
+      "bam": {
+        "kt": 1.443985897804671,
+        "error_gain_ratio": 0.9754522802666795,
+        "R": 2.0904493723477877,
+        "armature": 0.03245999409626578,
+        "q_offset": 0.0,
+        "max_velocity": 14.597462818084868,
+        "friction_base": 0.1958711784097532,
+        "friction_viscous": 0.03047350651248057,
+        "model": "m1",
+        "actuator": "sts321512v"
+      },
+      "command_delay_s": 0.02
+    },
+    "wrist_flex": {
+      "bam": {
+        "kt": 1.443985897804671,
+        "error_gain_ratio": 0.9754522802666795,
+        "R": 2.1208928098091633,
+        "armature": 0.03245999409626578,
+        "q_offset": 0.0,
+        "max_velocity": 14.597462818084868,
+        "friction_base": 0.1958711784097532,
+        "friction_viscous": 0.03047350651248057,
+        "model": "m1",
+        "actuator": "sts321512v"
+      },
+      "command_delay_s": 0.034
+    },
+    "wrist_roll": {
+      "bam": {
+        "kt": 1.443985897804671,
+        "error_gain_ratio": 0.9754522802666795,
+        "R": 2.151336247270539,
+        "armature": 0.03245999409626578,
+        "q_offset": 0.0,
+        "max_velocity": 14.597462818084868,
+        "friction_base": 0.1958711784097532,
+        "friction_viscous": 0.03047350651248057,
+        "model": "m1",
+        "actuator": "sts321512v"
+      },
+      "command_delay_s": 0.05
+    },
+    "gripper": {
+      "bam": {
+        "kt": 1.443985897804671,
+        "error_gain_ratio": 0.9754522802666795,
+        "R": 2.1817796847319144,
+        "armature": 0.03245999409626578,
+        "q_offset": 0.0,
+        "max_velocity": 14.597462818084868,
+        "friction_base": 0.1958711784097532,
+        "friction_viscous": 0.03047350651248057,
+        "model": "m1",
+        "actuator": "sts321512v"
+      },
+      "command_delay_s": 0.08
+    }
+  },
+  "calibration_interface_fit": {
+    "synthetic": true,
+    "p": 16,
+    "i": 0,
+    "d": 0,
+    "mapping": {
+      "shoulder_pan": {
+        "sign": 1,
+        "offset_rad": 0.05
+      },
+      "shoulder_lift": {
+        "sign": -1,
+        "offset_rad": -0.1
+      },
+      "elbow_flex": {
+        "sign": 1,
+        "offset_rad": 0.02
+      },
+      "wrist_flex": {
+        "sign": -1,
+        "offset_rad": -0.03
+      },
+      "wrist_roll": {
+        "sign": 1,
+        "offset_rad": 0.07
+      },
+      "gripper": {
+        "sign": -1,
+        "offset_rad": 0.1
+      }
+    },
+    "calibration": {
+      "shoulder_pan": {
+        "id": 1,
+        "drive_mode": 0,
+        "homing_offset": 0,
+        "range_min": 0,
+        "range_max": 4095
+      },
+      "shoulder_lift": {
+        "id": 2,
+        "drive_mode": 0,
+        "homing_offset": 0,
+        "range_min": 0,
+        "range_max": 4095
+      },
+      "elbow_flex": {
+        "id": 3,
+        "drive_mode": 0,
+        "homing_offset": 0,
+        "range_min": 0,
+        "range_max": 4095
+      },
+      "wrist_flex": {
+        "id": 4,
+        "drive_mode": 0,
+        "homing_offset": 0,
+        "range_min": 0,
+        "range_max": 4095
+      },
+      "wrist_roll": {
+        "id": 5,
+        "drive_mode": 0,
+        "homing_offset": 0,
+        "range_min": 0,
+        "range_max": 4095
+      },
+      "gripper": {
+        "id": 6,
+        "drive_mode": 0,
+        "homing_offset": 0,
+        "range_min": 0,
+        "range_max": 4095
+      }
+    },
+    "model_sha256": "9eb055d2650fb77de71835308cbcb7d01626c491fd8f725f58ca4e8e8b2e36b7",
+    "training_logs": [
+      "/workspace/scratch/773d9f176792/synthetic_validation/session/runs/synthetic/0.json",
+      "/workspace/scratch/773d9f176792/synthetic_validation/session/runs/synthetic/1.json"
+    ],
+    "parameter_interpretation": "UNFITTED synthetic software fixture; not measurements of hardware"
+  }
+}

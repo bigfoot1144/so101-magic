@@ -1,0 +1,1 @@
+The synthetic_calibration directory contains simulated software-test data and unfitted 12 V seed parameters. It is not a calibration of any physical arm. Training or evaluation requires explicit --allow-synthetic. Use your exported bundle for the real project.

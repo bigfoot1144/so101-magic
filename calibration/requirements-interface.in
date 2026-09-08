@@ -1,0 +1,2 @@
+# Add to the existing main .venv. JetPack 7 / Ubuntu 24.04 (glibc >= 2.39).
+PySide6-Essentials==6.11.2

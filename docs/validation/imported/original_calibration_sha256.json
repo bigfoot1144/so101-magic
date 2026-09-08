@@ -1,0 +1,15 @@
+{
+  "so101_sysid.py": "e23e60dfc7a5d5919a1ef2b2d1a17d7da9ec213257aa897fae5781063aa23411",
+  "so101_calibration_fit.py": "eac9329fd099b62183c76744f582eaef92066f43184e306b85ca31d500e7acca",
+  "VALIDATION.md": "be19fd7becacc187df5f660c6dea2f74b92e79b4b95e119027c9700e0fd9984e",
+  "so101_calibrate.py": "650ec9271279d91abd6bd0b0da4729ce76dcbc7b9fd853382697c53c7590d684",
+  "TEMPERATURE_REVIEW.md": "6178dc1859c837e04aacf9f81195463a6f082562928842f2cbfc60b7d6f6fb1a",
+  "requirements-jetson.in": "a198d52957dcfcfadce3e6e6ff146badcd242028b3034e03ecb089acbe00d128",
+  "requirements-interface.in": "3da0f66b576ee671dd41e70779a1b9cf3db7c4e7a17f28b4962b9962adb26fab",
+  "README.md": "e17bb26c203a08c0c9c2f40a756388c7b33071d1a437589006cda1497c03c30a",
+  "so101_calibration_core.py": "48c6e8626899463940f40c71861f7548424008bb8a60f8d87bbd176f2929f58d",
+  "tests/test_so101_sysid.py": "b6b54e503185eda4f92f28a3586c6b0332f3bcc2d4f6d23ed86ad6ab82a305f4",
+  "tests/test_fit_pipeline.py": "d31d89f7bc2f39ae07c9f1f495e39afa94ee4bb00a1b2537feb1dd70ce80c9b3",
+  "tests/test_interface.py": "79a3e086e64de81fd384fbcc16623e0bda47c41e21ca70f11c87bbf1c453b476",
+  "tests/gui_smoke.py": "781df6d36a131960dbd9169036eec0f2037c3e7503cda2d226d78cd4d74f3f83"
+}

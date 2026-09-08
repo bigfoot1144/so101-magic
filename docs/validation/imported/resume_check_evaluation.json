@@ -1,0 +1,16 @@
+{
+  "backend": "CPU MuJoCo + BAM; imported nominal calibration",
+  "synthetic_calibration": true,
+  "calibration_sha256": "56a58d460c93f3a86380448b9f0fdcc24f9a8452aac76be0cf7d1f6b2c1e47d5",
+  "hardware_evaluation": false,
+  "policy": "synthetic software-check policy; weights not packaged",
+  "task_mode": "fixed",
+  "episodes": 2,
+  "seed": 2026,
+  "bank_seed": 54321,
+  "success_rate": 0.0,
+  "failure_rate": 0.0,
+  "mean_final_distance_m": 0.0407986850850036,
+  "p95_final_distance_m": 0.0409992599934138,
+  "mean_return": 5.026516291749475
+}

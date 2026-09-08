@@ -1,0 +1,28 @@
+services:
+  codex:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    gpus: all
+
+    working_dir: /workspace
+
+    volumes:
+      - .:/workspace
+      - uv-cache:/root/.cache/uv
+      - codex-home:/root/.codex
+
+    environment:
+      MUJOCO_GL: egl
+      PYOPENGL_PLATFORM: egl
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility,graphics
+
+    shm_size: "8gb"
+
+    stdin_open: true
+    tty: true
+
+volumes:
+  uv-cache:
+  codex-home:

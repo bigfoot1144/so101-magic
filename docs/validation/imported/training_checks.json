@@ -1,0 +1,22 @@
+{
+  "data": "Synthetic, generated with calibration MuJoCo 3.12 and the supplied 12 V seed. No physical measurements.",
+  "training": {
+    "device": "cpu",
+    "environments": 64,
+    "iterations": 100,
+    "transitions": 204800,
+    "checkpoint_saved": true,
+    "onnx_exported": true,
+    "cpu_evaluation_completed": true
+  },
+  "resume": {
+    "environments": 4,
+    "additional_iterations": 2,
+    "checkpoint_restored": true,
+    "onnx_exported": true,
+    "cpu_evaluation_completed": true
+  },
+  "learned_success_criterion_met": false,
+  "gpu_tested": false,
+  "hardware_tested": false
+}
