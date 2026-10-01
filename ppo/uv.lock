@@ -716,10 +716,9 @@ dependencies = [
     { name = "rsl-rl-lib" },
     { name = "tensorboard" },
     { name = "tensordict" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
+    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torch", version = "2.10.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "extra == 'extra-9-so101-ppo-cuda'" },
+    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torchrunx" },
     { name = "tqdm" },
     { name = "trimesh" },
@@ -1468,10 +1467,9 @@ dependencies = [
     { name = "onnx" },
     { name = "onnxscript" },
     { name = "tensordict" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
+    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torch", version = "2.10.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "extra == 'extra-9-so101-ppo-cuda'" },
+    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torchvision", version = "0.25.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torchvision", version = "0.25.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torchvision", version = "0.25.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
@@ -1548,28 +1546,31 @@ version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "better-actuator-models" },
+    { name = "imageio" },
+    { name = "imageio-ffmpeg" },
     { name = "mjlab" },
     { name = "mujoco" },
     { name = "mujoco-warp" },
     { name = "onnxruntime" },
+    { name = "pillow" },
     { name = "rsl-rl-lib" },
     { name = "scipy" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
+    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torch", version = "2.10.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "extra == 'extra-9-so101-ppo-cuda'" },
+    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "warp-lang" },
 ]
 
 [package.optional-dependencies]
 cpu = [
-    { name = "torch", version = "2.10.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torch", version = "2.10.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torchvision", version = "0.25.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torchvision", version = "0.25.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
 ]
 cuda = [
-    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" } },
+    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torchvision", version = "0.25.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torchvision", version = "0.25.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
 ]
@@ -1582,10 +1583,13 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "better-actuator-models", git = "https://github.com/Rhoban/bam.git?rev=620a64fe67c1afe94fca81da73b128c7aed17c5f" },
+    { name = "imageio", specifier = "==2.37.4" },
+    { name = "imageio-ffmpeg", specifier = "==0.6.0" },
     { name = "mjlab", specifier = "==1.3.0" },
     { name = "mujoco", specifier = "==3.7.0" },
     { name = "mujoco-warp", specifier = "==3.7.0.1" },
     { name = "onnxruntime", specifier = ">=1.24" },
+    { name = "pillow", specifier = "==12.3.0" },
     { name = "rsl-rl-lib", specifier = "==5.0.1" },
     { name = "scipy", specifier = ">=1.16" },
     { name = "torch", specifier = "==2.10.0" },
@@ -1671,10 +1675,9 @@ dependencies = [
     { name = "orjson" },
     { name = "packaging" },
     { name = "pyvers" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
+    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torch", version = "2.10.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "extra == 'extra-9-so101-ppo-cuda'" },
+    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/34/41/4c1d5d0fa8ff3ebb2e4d4032b08dc8f9c00ab3cc0c68459f1695faea4279/tensordict-0.14.1-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:aa33b8f2ebbf8b29b2e799d2f48d41da4475fc19af3a9cba79c54c1121f5f806", size = 945960, upload-time = "2026-09-05T11:54:34.516Z" },
@@ -1686,35 +1689,18 @@ wheels = [
 [[package]]
 name = "torch"
 version = "2.10.0"
-source = { registry = "https://download.pytorch.org/whl/cpu" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
-dependencies = [
-    { name = "filelock", marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "fsspec", marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "jinja2", marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "networkx", marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "setuptools", marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "sympy", marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "typing-extensions", marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-]
-wheels = [
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.10.0-1-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:7fbbf409143a4fe0812a40c0b46a436030a7e1d14fe8c5234dfbe44df47f617e", upload-time = "2026-02-06T16:27:14Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.10.0-2-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:358bd7125cbec6e692d60618a5eec7f55a51b29e3652a849fd42af021d818023", upload-time = "2026-02-10T19:55:42Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.10.0-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:45a1c5057629444aeb1c452c18298fa7f30f2f7aeadd4dc41f9d340980294407", upload-time = "2026-01-23T15:09:55Z" },
-]
-
-[[package]]
-name = "torch"
-version = "2.10.0"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda'",
+    "sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda'",
+    "extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda'",
+]
 dependencies = [
     { name = "cuda-bindings", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "filelock", marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
-    { name = "fsspec", marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
-    { name = "jinja2", marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
-    { name = "networkx", marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
+    { name = "filelock", marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "fsspec", marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "jinja2", marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "networkx", marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-cublas-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-cuda-cupti-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-cuda-nvrtc-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
@@ -1730,10 +1716,10 @@ dependencies = [
     { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-nvshmem-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-nvtx-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "setuptools", marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
-    { name = "sympy", marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
+    { name = "setuptools", marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "sympy", marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "triton", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "typing-extensions", marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
+    { name = "typing-extensions", marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d3/54/a2ba279afcca44bbd320d4e73675b282fcee3d81400ea1b53934efca6462/torch-2.10.0-2-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:13ec4add8c3faaed8d13e0574f5cd4a323c11655546f91fbe6afa77b57423574", size = 79498202, upload-time = "2026-02-10T21:44:52.603Z" },
@@ -1775,14 +1761,13 @@ version = "2.10.0+cu128"
 source = { registry = "https://download.pytorch.org/whl/cu128" }
 resolution-markers = [
     "sys_platform == 'linux' or sys_platform == 'win32'",
-    "sys_platform != 'linux' and sys_platform != 'win32'",
 ]
 dependencies = [
     { name = "cuda-bindings", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "filelock", marker = "extra == 'extra-9-so101-ppo-cuda'" },
-    { name = "fsspec", marker = "extra == 'extra-9-so101-ppo-cuda'" },
-    { name = "jinja2", marker = "extra == 'extra-9-so101-ppo-cuda'" },
-    { name = "networkx", marker = "extra == 'extra-9-so101-ppo-cuda'" },
+    { name = "filelock", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "fsspec", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "jinja2", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "networkx", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-cublas-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-cuda-cupti-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-cuda-nvrtc-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
@@ -1798,10 +1783,10 @@ dependencies = [
     { name = "nvidia-nvjitlink-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-nvshmem-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "nvidia-nvtx-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "setuptools", marker = "extra == 'extra-9-so101-ppo-cuda'" },
-    { name = "sympy", marker = "extra == 'extra-9-so101-ppo-cuda'" },
+    { name = "setuptools", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "sympy", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "triton", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "typing-extensions", marker = "extra == 'extra-9-so101-ppo-cuda'" },
+    { name = "typing-extensions", marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
 ]
 wheels = [
     { url = "https://download-r2.pytorch.org/whl/cu128/torch-2.10.0%2Bcu128-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:6f09cdf2415516be028ae82e6b985bcfc3eac37bc52ab401142689f6224516ca", upload-time = "2026-01-21T15:22:03Z" },
@@ -1817,10 +1802,9 @@ dependencies = [
     { name = "cloudpickle" },
     { name = "fabric" },
     { name = "numpy" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
+    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "torch", version = "2.10.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "extra == 'extra-9-so101-ppo-cuda'" },
+    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/cc/80/b760a13db3e41fc2645911c30717cef05f1b200367d98f979226802ab10e/torchrunx-0.4.0.tar.gz", hash = "sha256:adcdbfd82ef633e549ba6e7694bc6eb258f55a6a64c8c59776794b922ae7b3ff", size = 41553, upload-time = "2026-08-04T07:55:09.264Z" }
 wheels = [
@@ -1839,9 +1823,7 @@ resolution-markers = [
 dependencies = [
     { name = "numpy", marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
     { name = "pillow", marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-9-so101-ppo-cpu') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "(extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda')" },
-    { name = "torch", version = "2.10.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'linux' and extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
+    { name = "torch", version = "2.10.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-9-so101-ppo-cpu') or (sys_platform == 'linux' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (sys_platform == 'win32' and extra != 'extra-9-so101-ppo-cpu' and extra != 'extra-9-so101-ppo-cuda') or (extra == 'extra-9-so101-ppo-cpu' and extra == 'extra-9-so101-ppo-cuda')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/56/3a/6ea0d73f49a9bef38a1b3a92e8dd455cea58470985d25635beab93841748/torchvision-0.25.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:c2abe430c90b1d5e552680037d68da4eb80a5852ebb1c811b2b89d299b10573b", size = 1874920, upload-time = "2026-01-21T16:27:45.348Z" },

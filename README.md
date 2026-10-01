@@ -1,8 +1,10 @@
 # SO-101 12 V: calibration to PPO
 
-This repository calibrates the SO-101 and trains a simulated fixed-target reach using its fitted motors. The selected real calibration is ready for an initial simulation run. No additional recording or refit is required for that run. Physical PPO deployment is not implemented; policy manifests retain `hardware_ready: false`.
+This repository calibrates the SO-101 and trains simulated position reaching or fixed pick-and-place using its fitted motors. Reaching supports fixed and random targets; pick-and-place controls all six joints with physical finger contact. See the [pick-and-place guide](ppo/README.md#fixed-pick-and-place) for its commands and limits. The selected real calibration is ready for an initial simulation run. No additional recording or refit is required for that run. Physical PPO deployment is not implemented; policy manifests retain `hardware_ready: false`.
 
-The policy controls shoulder pan, shoulder lift and elbow flex. Wrist flex, wrist roll and gripper hold their home commands. The fixed target is `(0.3145965, -0.0332624, 0.2507611)` metres in the base frame. Success means reaching within 15 mm with all joint speeds below 0.15 rad/s for one continuous second in a four-second episode.
+For reaching, the policy controls shoulder pan, shoulder lift and elbow flex. Wrist flex, wrist roll and gripper hold their home commands. The fixed target is `(0.3145965, -0.0332624, 0.2507611)` metres in the base frame. Success means reaching within 15 mm with all joint speeds below 0.15 rad/s for one continuous second in a four-second near-workspace episode. New random tasks use the wide workspace, with a larger action range and 35-second episodes for the selected calibration.
+
+**Start with the [PPO quickstart](docs/QUICKSTART.md)** for task descriptions, fixed/random training commands, robustness, visualization, evaluation, resume and the complete training option reference.
 
 All commands below run from the repository root.
 
@@ -91,6 +93,55 @@ uv run --project ppo --locked --extra cuda so101-train \
 ```
 
 These smoke directories already exist after verification; choose new names to repeat. Every training invocation requires a new run directory. For a longer resume, use the same pattern with `runs/fixed_calibrated/checkpoint.pt`, its frozen `calibration/`, a new output directory, and the desired additional iterations. **Resume requires the original bundle. Changed calibration means a new training run.** Earlier uncalibrated checkpoints cannot be resumed under this contract.
+
+## Periodic training visualization
+
+Add `--visualize show`, `save`, or `both` to the training command. Visualization is off by default. Each preview briefly pauses training and runs the current policy for one episode in a separate CPU simulation. The camera repeats; the starting pose also repeats unless `--start-mode random` is enabled with rotating previews. Random-mode previews rotate targets between captures by default; fixed-mode previews retain the original target. Add `--visualize-targets fixed` to repeat one target for direct progress comparisons. It uses deterministic actions and the copied observation normalizer, with nominal frozen calibration even for robust training.
+
+Show and save a preview every 25 completed PPO rollout/update iterations:
+
+```bash
+uv run --project ppo --locked --extra cuda so101-train \
+  --calibration data/calibrations/so101-12v-20260907-174850-482396032 \
+  --device cuda:0 --num-envs 1024 --iterations 300 \
+  --run runs/fixed_visualized \
+  --visualize both --visualize-every 25
+```
+
+Record without a desktop on an NVIDIA machine:
+
+```bash
+env MUJOCO_GL=egl uv run --project ppo --locked --extra cuda so101-train \
+  --calibration data/calibrations/so101-12v-20260907-174850-482396032 \
+  --device cuda:0 --num-envs 1024 --iterations 300 \
+  --run runs/fixed_recorded \
+  --visualize save --visualize-every 25 --timelapse-speed 4
+```
+
+| Option | Default | Behavior |
+| --- | --- | --- |
+| `--visualize off/show/save/both` | `off` | Disable, display, record, or display and record previews |
+| `--visualize-every N` | `25` | Preview every N completed rollout/update iterations |
+| `--visualize-targets auto/fixed/rotate` | `auto` | Auto rotates random-mode previews; fixed repeats one target; fixed-mode training always retains its original target |
+| `--timelapse-speed S` | `4` | Speed multiplier for the compilation; individual clips remain real time |
+
+Add `--start-mode random` to opt into reachable random starts for training, evaluation and previews; new runs otherwise retain near-home starts. Resume and evaluation inherit the saved start mode. Fixed previews repeat one sampled start; rotating previews vary it. See the [random-start quickstart](docs/QUICKSTART.md#optional-random-starting-poses).
+
+New `--mode random` runs default to `--workspace wide`, sampling 4,096 targets across the checked reachable region. Add `--start-mode random` to vary the initial hand pose over the same region. Use `--workspace near` for the original task. Wide policies require a fresh run; older checkpoints retain their near action mapping.
+
+Random training already chooses targets independently for each environment on reset. Preview rotation changes only visualization, using the existing held-out preview bank and a local seeded generator. Each target stays still throughout its preview episode. Consecutive wide targets and random-start tool positions are at least 15 cm apart when possible (near targets: 3 cm); otherwise the farthest available target is selected. Target bank index and XYZ coordinates are shown in the overlay and per-episode metadata.
+
+One rollout here collects 32 control steps from every training environment, followed by a PPO update; it is not one completed episode. Captures include the starting policy, each interval, and the final policy, without a duplicate final clip. A resumed invocation starts its own preview count at zero, showing the loaded policy first. Its target sequence also restarts; metadata records the source checkpoint and cumulative training control steps.
+
+Saved output is in `runs/<run>/visualization/`:
+
+- `episode_000000.mp4`, `episode_000025.mp4`, etc.: 1280×720, 25 FPS, up to the workspace episode duration each (near: 4 s; selected wide calibration: 35 s). Text shows rollouts completed in this invocation, episode time, distance and outcome.
+- `manifest.json`: calibration identity, initial preview conditions, target-selection mode, per-episode target coordinates/metrics, frame counts, source checkpoint and any visualization errors.
+- `timelapse.mp4`: completed clips in chronological order, at the selected speed, compiled when training exits. At the default 4× speed, each full episode occupies one second.
+
+Showing an episode takes its simulated duration plus overhead (up to 35 seconds for wide previews). Recording runs as fast as simulation, rendering and encoding allow. The desktop window stays at the last preview between captures; closing it disables further display while training and requested recording continue. Display mode needs a working graphical desktop. Headless recording needs a working OpenGL backend (EGL in the NVIDIA example), but no desktop.
+
+Rendering and encoding are checked before learning. A later visualization error is reported in the terminal and manifest, disables further previews, and lets training continue. On Ctrl-C, completed clips are retained and compilation is attempted; an incomplete current clip is discarded. This does not add training-checkpoint recovery on interruption. The training environments, policy state and RNG streams are not modified by previews.
 
 ## Evaluate ONNX and view
 

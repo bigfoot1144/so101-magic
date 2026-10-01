@@ -34,23 +34,27 @@ OBS_LAYOUT = {
 }
 
 
-def observation(q, dq, goal, tool, command):
+def observation(q, dq, goal, tool, command, center=None, scale=None):
     """Raw, unnormalized actor input. ONNX contains the trained normalizer."""
+    center = HOME[:3] if center is None else center
+    scale = ACTION_SCALE if scale is None else scale
     return np.concatenate([
         np.asarray(q) - HOME,
         np.asarray(dq) * 0.1,
         np.asarray(goal),
         np.asarray(goal) - tool,
-        (np.asarray(command)[..., :3] - HOME[:3]) / ACTION_SCALE,
+        (np.asarray(command)[..., :3] - center) / scale,
     ], axis=-1).astype(np.float32)
 
 
-def next_command(action, previous, bounds=None):
-    """Absolute home-relative position targets with a matched 50 Hz slew limit."""
+def next_command(action, previous, bounds=None, center=None, scale=None):
+    """Absolute position targets in the selected action range, with a 50 Hz slew limit."""
     action = np.asarray(action, dtype=np.float32)
     if action.shape[-1] != ACTION_DIM or not np.isfinite(action).all():
         raise ValueError("Expected finite (..., 3) policy actions")
-    desired = HOME[:3] + ACTION_SCALE * np.clip(action, -1.0, 1.0)
+    center = HOME[:3] if center is None else center
+    scale = ACTION_SCALE if scale is None else scale
+    desired = center + scale * np.clip(action, -1.0, 1.0)
     previous = np.asarray(previous)
     result = np.broadcast_to(HOME, previous.shape).copy()
     limit = MAX_COMMAND_SPEED * CONTROL_DT
@@ -58,16 +62,16 @@ def next_command(action, previous, bounds=None):
         desired - previous[..., :3], -limit, limit
     )
     result[..., :3] = np.clip(
-        result[..., :3], HOME[:3] - ACTION_SCALE, HOME[:3] + ACTION_SCALE
+        result[..., :3], center - scale, center + scale
     )
     if bounds is not None:
         result[..., :3] = np.clip(result[..., :3], bounds[0], bounds[1])
     return result.astype(np.float32)
 
 
-def reward_rate(distance, dq, command_delta):
+def reward_rate(distance, dq, command_delta, distance_scale=.10):
     """Reward per second. Both simulators multiply it by CONTROL_DT."""
-    coarse = 2.0 * (1.0 - np.tanh(distance / 0.10))
+    coarse = 2.0 * (1.0 - np.tanh(distance / distance_scale))
     fine = np.exp(-0.5 * (distance / 0.02) ** 2)
     velocity_cost = 0.01 * np.square(dq).sum(axis=-1)
     command_cost = 0.02 * np.square(
@@ -76,8 +80,8 @@ def reward_rate(distance, dq, command_delta):
     return coarse + fine - velocity_cost - command_cost
 
 
-def policy_manifest():
-    return {
+def policy_manifest(workspace=None):
+    result = {
         "schema": 2,
         "hardware_ready": False,
         "joint_convention": "TheRobotStudio SO101 so101_new_calib.xml",
@@ -101,3 +105,11 @@ def policy_manifest():
                     "max_joint_speed_rad_s": SUCCESS_SPEED,
                     "consecutive_hold_s": HOLD_STEPS * CONTROL_DT},
     }
+
+    if workspace is not None and workspace.name == "wide":
+        result.update(schema=3, action_center_rad=workspace.center.tolist(),
+                      action_scale_rad=workspace.scale.tolist(), **workspace.metadata())
+        result["observation_layout"] = dict(OBS_LAYOUT)
+        del result["observation_layout"]["previous_command_minus_home_divided_by_action_scale"]
+        result["observation_layout"]["previous_command_minus_action_center_divided_by_action_scale"] = [18, 21]
+    return result

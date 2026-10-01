@@ -22,10 +22,12 @@ from mjlab.viewer import ViewerConfig
 from .actuators import CalibratedBamActuatorCfg
 from .calibration import RAD_PER_TICK, register_12v
 from .contract import (
-    ACTION_SCALE, CONTROL_DT, DECIMATION, EPISODE_SECONDS, HOLD_STEPS, HOME,
+    ACTION_SCALE, CONTROL_DT, DECIMATION, HOLD_STEPS, HOME,
     JOINTS, MAX_COMMAND_SPEED, PHYSICS_DT, SITE, SUCCESS_DISTANCE, SUCCESS_SPEED,
 )
 from .model import robot_spec, target_bank, validate_geometry
+from .starts import resolve_start_mode, start_bank
+from .workspace import workspace_config, task_bank
 
 
 class ArmAction(ActionTerm):
@@ -36,7 +38,8 @@ class ArmAction(ActionTerm):
             raise RuntimeError(f"Joint mapping mismatch: {names}")
         self.ids = torch.tensor(ids, device=self.device)
         self.home = torch.tensor(HOME, device=self.device)
-        self.scale = torch.tensor(ACTION_SCALE, device=self.device)
+        self.scale = torch.tensor(cfg.scale, device=self.device)
+        self.center = torch.tensor(cfg.center, device=self.device)
         self.lower = torch.tensor(cfg.lower, device=self.device)
         self.upper = torch.tensor(cfg.upper, device=self.device)
         self.mid = torch.tensor(cfg.mid, dtype=torch.float64, device=self.device)
@@ -56,11 +59,11 @@ class ArmAction(ActionTerm):
 
     def process_actions(self, actions):
         self._raw[:] = actions
-        desired = self.home[:3] + self.scale * actions.clamp(-1, 1)
+        desired = self.center + self.scale * actions.clamp(-1, 1)
         maximum = MAX_COMMAND_SPEED * CONTROL_DT
         self.delta[:] = (desired - self.command[:, :3]).clamp(-maximum, maximum)
         self.command[:, :3] += self.delta
-        self.command[:, :3].clamp_(self.home[:3] - self.scale, self.home[:3] + self.scale)
+        self.command[:, :3].clamp_(self.center - self.scale, self.center + self.scale)
         self.command[:, :3].clamp_(self.lower, self.upper)
 
     def quantized_command(self):
@@ -87,6 +90,8 @@ class ArmAction(ActionTerm):
 class ArmActionCfg(ActionTermCfg):
     lower: tuple = tuple(HOME[:3] - ACTION_SCALE)
     upper: tuple = tuple(HOME[:3] + ACTION_SCALE)
+    center: tuple = tuple(HOME[:3])
+    scale: tuple = tuple(ACTION_SCALE)
     mid: tuple = (2047.5,) * 6
     sign: tuple = (1.,) * 6
     offset: tuple = (0.,) * 6
@@ -120,7 +125,7 @@ class GoalCommand(CommandTerm):
         super().__init__(cfg, env)
         ids, _ = env.scene["robot"].find_sites((SITE,))
         self.site_id = ids[0]
-        self.bank = torch.tensor(target_bank(cfg.mode, cfg.bank_seed)[0], device=self.device)
+        self.bank = torch.tensor(cfg.goals if cfg.goals is not None else target_bank(cfg.mode, cfg.bank_seed)[0], device=self.device)
         self.goal = self.bank[:1].repeat(self.num_envs, 1)
         self.hold = torch.zeros(self.num_envs, dtype=torch.long, device=self.device)
         self.succeeded = torch.zeros(self.num_envs, device=self.device)
@@ -158,17 +163,24 @@ class GoalCommand(CommandTerm):
 class GoalCommandCfg(CommandTermCfg):
     mode: str = "fixed"
     bank_seed: int = 12345
+    goals: object = None
 
     def build(self, env):
         return GoalCommand(self, env)
 
 
-def reset_robot(env, env_ids, lower, upper, spread=0.02):
+def reset_robot(env, env_ids, lower, upper, spread=0.02, poses=None):
     robot = env.scene["robot"]
     ids, _ = robot.find_joints(JOINTS, preserve_order=True)
-    q = torch.tensor(HOME, device=env.device).repeat(len(env_ids), 1)
-    q[:, :3] += torch.empty(len(env_ids), 3, device=env.device).uniform_(-spread, spread)
-    q[:, :3].clamp_(torch.tensor(lower, device=env.device), torch.tensor(upper, device=env.device))
+    if poses is None:
+        q = torch.tensor(HOME, device=env.device).repeat(len(env_ids), 1)
+        q[:, :3] += torch.empty(len(env_ids), 3, device=env.device).uniform_(-spread, spread)
+        q[:, :3].clamp_(torch.tensor(lower, device=env.device), torch.tensor(upper, device=env.device))
+    else:
+        if not hasattr(env, "_start_pose_bank"):
+            env._start_pose_bank = torch.tensor(poses, device=env.device)
+        indices = torch.randint(len(env._start_pose_bank), (len(env_ids),), device=env.device)
+        q = env._start_pose_bank[indices]
     robot.write_joint_state_to_sim(q, torch.zeros_like(q), joint_ids=ids, env_ids=env_ids)
 
 
@@ -185,17 +197,17 @@ def actor_observation(env):
     goal = env.command_manager.get_command("goal")
     return torch.cat((
         q - action.home, dq * 0.1, goal, goal - tool_position(env),
-        (action.command[:, :3] - action.home[:3]) / action.scale,
+        (action.command[:, :3] - action.center) / action.scale,
     ), dim=-1)
 
 
-def reaching_reward(env):
+def reaching_reward(env, distance_scale=.10):
     _, dq = joint_state(env)
     distance = torch.linalg.vector_norm(
         env.command_manager.get_command("goal") - tool_position(env), dim=-1
     )
     rate = arm(env).delta / (CONTROL_DT * MAX_COMMAND_SPEED)
-    return (2 * (1 - torch.tanh(distance / 0.10))
+    return (2 * (1 - torch.tanh(distance / distance_scale))
             + torch.exp(-0.5 * (distance / 0.02).square())
             - 0.01 * dq.square().sum(-1) - 0.02 * rate.square().sum(-1))
 
@@ -217,10 +229,12 @@ def task_failure(env):
 
 
 def make_env_cfg(calibration, mode="fixed", num_envs=1024, seed=42,
-                 robust=False, bank_seed=12345, replay=False, voltage=None):
+                 robust=False, bank_seed=12345, replay=False, voltage=None, start_mode="home", workspace="near"):
+    start_mode = resolve_start_mode(start_mode)
     register_12v()
     source_model = validate_geometry(calibration)
-    lower, upper = calibration.task_bounds()
+    region = workspace_config(calibration, workspace)
+    lower, upper = region.lower, region.upper
     volts = calibration.voltage if voltage is None else voltage
     actuators = tuple(CalibratedBamActuatorCfg(
         json_path=path, target_names_expr=(name,), vin=float(volts[i]), kp_fw=16,
@@ -237,28 +251,33 @@ def make_env_cfg(calibration, mode="fixed", num_envs=1024, seed=42,
     )
     events = {
         "bam_init": EventTermCfg(func=bam_init, mode="startup"),
-        "reset_robot": EventTermCfg(func=reset_robot, mode="reset", params={"lower": lower, "upper": upper}),
+        "reset_robot": EventTermCfg(func=reset_robot, mode="reset", params={"lower": lower, "upper": upper,
+            "poses": start_bank(calibration, workspace=workspace) if start_mode == "random" else None}),
     }
     if robust:
         events["gain_randomization"] = EventTermCfg(func=randomize_gains, mode="startup")
     terms = {"state": ObservationTermCfg(func=actor_observation)}
     return ManagerBasedRlEnvCfg(
-        seed=seed, decimation=DECIMATION, episode_length_s=EPISODE_SECONDS,
+        seed=seed, decimation=DECIMATION, episode_length_s=region.episode_seconds,
         scene=SceneCfg(num_envs=num_envs, env_spacing=1, entities={"robot": robot}),
         sim=SimulationCfg(nconmax=128, njmax=256, mujoco=MujocoCfg(
             timestep=PHYSICS_DT, integrator="implicitfast", iterations=int(source_model.opt.iterations),
             ls_iterations=int(source_model.opt.ls_iterations), tolerance=float(source_model.opt.tolerance))),
         actions={"arm": ArmActionCfg(entity_name="robot", lower=tuple(lower), upper=tuple(upper),
+                    center=tuple(region.center), scale=tuple(region.scale),
                     mid=tuple(calibration.mid), sign=tuple(calibration.sign), offset=tuple(calibration.offset))},
         commands={"goal": GoalCommandCfg(mode=mode, bank_seed=bank_seed,
+                    goals=task_bank(calibration, mode, bank_seed, workspace)[0],
                     resampling_time_range=(1e9, 1e9), debug_vis=True)},
         observations={"actor": ObservationGroupCfg(terms, enable_corruption=False),
                       "critic": ObservationGroupCfg(dict(terms), enable_corruption=False)},
         events=events,
-        rewards={"reach": RewardTermCfg(func=reaching_reward, weight=1)},
+        rewards={"reach": RewardTermCfg(func=reaching_reward, weight=1,
+                    params={"distance_scale": region.reward_distance_scale})},
         terminations={"failure": TerminationTermCfg(func=task_failure),
                       "timeout": TerminationTermCfg(func=time_out, time_out=True)},
-        viewer=ViewerConfig(lookat=(0.20, 0, 0.16), distance=0.75, elevation=-25,
+        viewer=ViewerConfig(lookat=(0., 0., .22) if workspace == "wide" else (0.20, 0, 0.16),
+                            distance=1.25 if workspace == "wide" else .75, elevation=-25,
                             azimuth=135, origin_type=ViewerConfig.OriginType.WORLD),
     )
 

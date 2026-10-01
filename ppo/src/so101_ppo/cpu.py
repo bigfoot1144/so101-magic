@@ -5,17 +5,23 @@ from bam.model import load_model
 from bam.mujoco import MujocoController
 
 from .calibration import register_12v
-from .contract import CONTROL_DT, DECIMATION, HOME, JOINTS, SITE, next_command, observation, reward_rate
+from .contract import (ACTION_SCALE, CONTROL_DT, DECIMATION, EPISODE_STEPS, HOME, JOINTS, SITE,
+                       next_command, observation, reward_rate)
 from .model import cpu_spec, indices
+from .workspace import workspace_config
 
 
 class CpuArm:
-    def __init__(self, calibration, voltage=None, check_task=True):
+    def __init__(self, calibration, voltage=None, check_task=True, workspace="near", spec_factory=cpu_spec):
         self.calibration = calibration
-        self.bounds = calibration.task_bounds() if check_task else None
+        self.workspace = workspace_config(calibration, workspace) if check_task else None
+        self.bounds = (self.workspace.lower, self.workspace.upper) if check_task else None
+        self.center = self.workspace.center if check_task else HOME[:3]
+        self.scale = self.workspace.scale if check_task else ACTION_SCALE
+        self.episode_steps = self.workspace.episode_steps if check_task else EPISODE_STEPS
         register_12v()
         self.bam_models = [load_model(path) for path in calibration.paths]
-        spec = cpu_spec(calibration)
+        spec = spec_factory(calibration)
         for name in JOINTS:
             actuator = spec.actuator(name)
             actuator.set_to_motor()
@@ -33,6 +39,8 @@ class CpuArm:
             self.controllers.append(MujocoController(model, name, self.model, self.data))
         self.goal = np.zeros(3, np.float32)
         self.command = HOME.copy()
+        self.home = HOME.copy()
+        self.active_count = 3
         self.history = np.zeros((int(calibration.lags.max()) + 1, 6))
         self.cursor = 0
         self.initial_friction = self.model.dof_frictionloss.copy()
@@ -51,15 +59,15 @@ class CpuArm:
         return self.data.site(SITE).xpos.copy()
 
     def observe(self):
-        return observation(self.q, self.dq, self.goal, self.tool, self.command)
+        return observation(self.q, self.dq, self.goal, self.tool, self.command, self.center, self.scale)
 
     def reset(self, goal, q=None, dq=None, initial_target=None):
         mujoco.mj_resetData(self.model, self.data)
-        self.data.qpos[self.qi] = HOME if q is None else q
+        self.data.qpos[self.qi] = self.home if q is None else q
         self.data.qvel[self.vi] = 0 if dq is None else dq
         self.goal = np.asarray(goal, np.float32).copy()
-        self.command = HOME.copy()
-        self.command[:3] = self.q[:3]
+        self.command = self.home.copy()
+        self.command[:self.active_count] = self.q[:self.active_count]
         target = self.calibration.quantize(self.command) if initial_target is None else np.asarray(initial_target)
         self.history[:] = target
         self.cursor = 0
@@ -91,11 +99,12 @@ class CpuArm:
 
     def step(self, action):
         previous = self.command.copy()
-        self.command = next_command(action, previous, self.bounds)
+        self.command = next_command(action, previous, self.bounds, self.center, self.scale)
         target = self.calibration.quantize(self.command)
         for _ in range(DECIMATION):
             self.step_targets(target)
         distance = np.linalg.norm(self.goal - self.tool)
-        reward = CONTROL_DT * reward_rate(distance, self.dq, (self.command - previous)[:3])
+        reward = CONTROL_DT * reward_rate(distance, self.dq, (self.command - previous)[:3],
+                                        self.workspace.reward_distance_scale if self.workspace else .10)
         mujoco.mj_forward(self.model, self.data)
         return self.observe(), float(reward)
